@@ -1,0 +1,794 @@
+<!-- ============================================================
+     University of Vermont — Ellucian Experience Page Builder HTML
+     Component: Homepage widget (banner carousel + feedback links + quick links)
+     Notes for whoever maintains this:
+       - All styles are scoped under #uvm-portal-root so nothing leaks
+         into the Experience shell, even though the iframe already
+         isolates this document's global scope.
+       - Update the SLIDES and LINK data at the bottom of the <script>
+         block — everything renders from those arrays, no need to
+         touch the markup.
+       - Fonts: Lora (display) + Roboto (UI/body), per UVM Brand
+         Guidelines v.03.24, sections 4.1 and 4.3. Acumin Pro is the
+         print-preferred secondary face but isn't licensed for web
+         embedding here, so Roboto (the documented web fallback) is
+         used throughout.
+   ============================================================ -->
+<div id="uvm-portal-root">
+
+  <style>
+    #uvm-portal-root {
+      --uvm-green: #154734;
+      --uvm-green-dark: #0e3325;
+      --uvm-gold: #FFD100;
+      --uvm-slate: #00313C;
+      --uvm-sky: #489FDF;
+      --uvm-old-mill: #DC582A;
+      --uvm-fog: #F7F7F7;
+      --uvm-ink: #2B2B2B;
+      --uvm-white: #FFFFFF;
+      --uvm-radius: 10px;
+      --uvm-shadow: 0 2px 6px rgba(14, 51, 37, 0.12), 0 1px 2px rgba(14, 51, 37, 0.08);
+
+      font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color: var(--uvm-ink);
+      box-sizing: border-box;
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 16px 40px;
+    }
+    #uvm-portal-root *, #uvm-portal-root *::before, #uvm-portal-root *::after {
+      box-sizing: inherit;
+    }
+    #uvm-portal-root h1, #uvm-portal-root h2, #uvm-portal-root h3 {
+      font-family: 'Lora', Georgia, serif;
+      color: var(--uvm-green);
+      margin: 0 0 8px;
+      font-weight: 600;
+    }
+    #uvm-portal-root a { color: var(--uvm-green); }
+    #uvm-portal-root a:focus-visible,
+    #uvm-portal-root button:focus-visible {
+      outline: 3px solid var(--uvm-sky);
+      outline-offset: 2px;
+    }
+
+    /* ---------- Section scaffolding ---------- */
+    #uvm-portal-root .uvm-section {
+      margin-top: 40px;
+    }
+    #uvm-portal-root .uvm-section-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+      border-bottom: 3px solid var(--uvm-gold);
+      padding-bottom: 8px;
+    }
+    #uvm-portal-root .uvm-section-head h2 {
+      font-size: 1.5rem;
+    }
+    #uvm-portal-root .uvm-eyebrow {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--uvm-slate);
+      background: var(--uvm-fog);
+      border-radius: 999px;
+      padding: 3px 10px;
+      white-space: nowrap;
+    }
+
+    /* ================= Carousel ================= */
+    #uvm-portal-root .uvm-carousel {
+      position: relative;
+      background: var(--uvm-green);
+      border-radius: var(--uvm-radius);
+      overflow: hidden;
+      box-shadow: var(--uvm-shadow);
+      isolation: isolate;
+    }
+    #uvm-portal-root .uvm-carousel-track {
+      display: flex;
+      transition: transform 0.55s cubic-bezier(0.65, 0, 0.35, 1);
+      will-change: transform;
+    }
+    #uvm-portal-root .uvm-slide {
+      flex: 0 0 100%;
+      min-height: 300px;
+      display: grid;
+      grid-template-columns: 1fr;
+      align-content: center;
+      padding: 40px 56px;
+      position: relative;
+      background-size: cover;
+      background-position: center;
+    }
+    #uvm-portal-root .uvm-slide::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(100deg, rgba(14,51,37,0.94) 30%, rgba(14,51,37,0.55) 75%, rgba(14,51,37,0.3) 100%);
+      z-index: 0;
+    }
+    #uvm-portal-root .uvm-slide-content {
+      position: relative;
+      z-index: 1;
+      max-width: 620px;
+    }
+    #uvm-portal-root .uvm-slide-tag {
+      display: inline-block;
+      background: var(--uvm-gold);
+      color: var(--uvm-green-dark);
+      font-weight: 700;
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-bottom: 14px;
+    }
+    #uvm-portal-root .uvm-slide h3 {
+      color: var(--uvm-white);
+      font-size: 1.85rem;
+      line-height: 1.15;
+      margin-bottom: 10px;
+    }
+    #uvm-portal-root .uvm-slide p {
+      color: rgba(255,255,255,0.88);
+      font-size: 1rem;
+      line-height: 1.5;
+      margin: 0 0 18px;
+    }
+    #uvm-portal-root .uvm-slide-meta {
+      color: var(--uvm-gold);
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: 0.02em;
+      margin-bottom: 16px;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    #uvm-portal-root .uvm-slide-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--uvm-white);
+      color: var(--uvm-green);
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 10px 18px;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+    #uvm-portal-root .uvm-slide-cta:hover {
+      background: var(--uvm-gold);
+      transform: translateY(-1px);
+    }
+
+    #uvm-portal-root .uvm-carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 2;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.4);
+      color: var(--uvm-white);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      backdrop-filter: blur(2px);
+      transition: background 0.15s ease;
+    }
+    #uvm-portal-root .uvm-carousel-btn:hover { background: rgba(255,255,255,0.3); }
+    #uvm-portal-root .uvm-carousel-btn.prev { left: 16px; }
+    #uvm-portal-root .uvm-carousel-btn.next { right: 16px; }
+
+    #uvm-portal-root .uvm-carousel-controls {
+      position: absolute;
+      bottom: 16px;
+      left: 0;
+      right: 0;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    #uvm-portal-root .uvm-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.4);
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      transition: background 0.15s ease, transform 0.15s ease;
+    }
+    #uvm-portal-root .uvm-dot[aria-current="true"] {
+      background: var(--uvm-gold);
+      transform: scale(1.25);
+    }
+    #uvm-portal-root .uvm-carousel-pause {
+      position: absolute;
+      bottom: 14px;
+      right: 16px;
+      z-index: 2;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.4);
+      color: var(--uvm-white);
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ================= Spotlight section ================= */
+    #uvm-portal-root .uvm-spotlight {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 32px;
+      align-items: center;
+      background: var(--uvm-white);
+      border: 1px solid #E3E3E3;
+      border-radius: var(--uvm-radius);
+      padding: 32px;
+      box-shadow: var(--uvm-shadow);
+    }
+    #uvm-portal-root .uvm-spotlight-text h3 {
+      font-size: 1.65rem;
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+    #uvm-portal-root .uvm-spotlight-text p {
+      font-size: 0.96rem;
+      line-height: 1.6;
+      color: #444;
+      margin: 0 0 14px;
+    }
+    #uvm-portal-root .uvm-spotlight-text .uvm-slide-tag {
+      background: var(--uvm-gold);
+      color: var(--uvm-green-dark);
+    }
+    #uvm-portal-root .uvm-spotlight-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--uvm-green);
+      color: var(--uvm-white);
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 10px 18px;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: background 0.15s ease, transform 0.15s ease;
+    }
+    #uvm-portal-root .uvm-spotlight-cta:hover {
+      background: var(--uvm-green-dark);
+      transform: translateY(-1px);
+    }
+    #uvm-portal-root .uvm-spotlight-media {
+      position: relative;
+      border-radius: var(--uvm-radius);
+      overflow: hidden;
+      min-height: 260px;
+      background: var(--uvm-green);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #uvm-portal-root .uvm-spotlight-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    #uvm-portal-root .uvm-spotlight-media.uvm-placeholder {
+      background: linear-gradient(155deg, var(--uvm-green) 0%, var(--uvm-green-dark) 100%);
+    }
+    #uvm-portal-root .uvm-spotlight-media.uvm-placeholder svg {
+      width: 72px;
+      height: 72px;
+      opacity: 0.85;
+    }
+    #uvm-portal-root .uvm-spotlight-media.uvm-placeholder .uvm-placeholder-label {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      right: 12px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.75);
+    }
+    @media (max-width: 720px) {
+      #uvm-portal-root .uvm-spotlight {
+        grid-template-columns: 1fr;
+        padding: 24px;
+      }
+      #uvm-portal-root .uvm-spotlight-media {
+        order: -1;
+        min-height: 200px;
+      }
+    }
+
+    /* ================= Feedback section ================= */
+    #uvm-portal-root .uvm-feedback-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 16px;
+    }
+    #uvm-portal-root .uvm-feedback-card {
+      background: var(--uvm-white);
+      border: 1px solid #E3E3E3;
+      border-left: 5px solid var(--uvm-sky);
+      border-radius: var(--uvm-radius);
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      text-decoration: none;
+      color: var(--uvm-ink);
+      transition: box-shadow 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
+    }
+    #uvm-portal-root .uvm-feedback-card:hover {
+      box-shadow: var(--uvm-shadow);
+      transform: translateY(-2px);
+      border-left-color: var(--uvm-gold);
+    }
+    #uvm-portal-root .uvm-feedback-card h3 {
+      font-size: 1.05rem;
+      color: var(--uvm-green);
+    }
+    #uvm-portal-root .uvm-feedback-card p {
+      font-size: 0.88rem;
+      color: #555;
+      line-height: 1.4;
+      margin: 0;
+      flex-grow: 1;
+    }
+    #uvm-portal-root .uvm-feedback-card .uvm-arrow {
+      font-weight: 700;
+      color: var(--uvm-green);
+      font-size: 0.85rem;
+    }
+
+    /* ================= Quick links section ================= */
+    #uvm-portal-root .uvm-quicklinks-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 12px;
+    }
+    #uvm-portal-root .uvm-quicklink {
+      background: var(--uvm-fog);
+      border-radius: var(--uvm-radius);
+      padding: 16px 12px;
+      text-align: center;
+      text-decoration: none;
+      color: var(--uvm-green-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      line-height: 1.3;
+      transition: background 0.15s ease, transform 0.15s ease;
+      border: 1px solid transparent;
+    }
+    #uvm-portal-root .uvm-quicklink:hover {
+      background: var(--uvm-green);
+      color: var(--uvm-white);
+      transform: translateY(-2px);
+    }
+    #uvm-portal-root .uvm-quicklink-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--uvm-green);
+      color: var(--uvm-white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.15s ease;
+    }
+    #uvm-portal-root .uvm-quicklink:hover .uvm-quicklink-icon {
+      background: var(--uvm-gold);
+      color: var(--uvm-green-dark);
+    }
+    #uvm-portal-root .uvm-quicklink-icon svg { width: 18px; height: 18px; }
+
+    #uvm-portal-root .uvm-sr-only {
+      position: absolute;
+      width: 1px; height: 1px;
+      padding: 0; margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #uvm-portal-root .uvm-carousel-track { transition: none; }
+      #uvm-portal-root * { animation: none !important; }
+    }
+
+    @media (max-width: 640px) {
+      #uvm-portal-root .uvm-slide { padding: 32px 24px; min-height: 340px; }
+      #uvm-portal-root .uvm-slide h3 { font-size: 1.4rem; }
+      #uvm-portal-root .uvm-carousel-btn { width: 34px; height: 34px; }
+      #uvm-portal-root .uvm-quicklinks-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
+    }
+  </style>
+
+  <!-- ================= Banner Carousel ================= -->
+  <section class="uvm-section" aria-label="Campus announcements">
+    <div class="uvm-carousel" id="uvmCarousel" role="region" aria-roledescription="carousel" aria-label="Upcoming events and campus news">
+      <div class="uvm-carousel-track" id="uvmTrack"></div>
+      <button class="uvm-carousel-btn prev" id="uvmPrev" aria-label="Previous slide">&#8249;</button>
+      <button class="uvm-carousel-btn next" id="uvmNext" aria-label="Next slide">&#8250;</button>
+      <button class="uvm-carousel-pause" id="uvmPause" aria-label="Pause automatic rotation">&#10073;&#10073;</button>
+      <div class="uvm-carousel-controls" id="uvmDots"></div>
+    </div>
+  </section>
+
+  <!-- ================= Spotlight Section (single topic, text + image) ================= -->
+  <section class="uvm-section" aria-labelledby="uvmSpotlightHeading">
+    <div class="uvm-spotlight" id="uvmSpotlight">
+      <div class="uvm-spotlight-text" id="uvmSpotlightText"></div>
+      <div class="uvm-spotlight-media" id="uvmSpotlightMedia"></div>
+    </div>
+  </section>
+
+  <!-- ================= Feedback Section ================= -->
+  <section class="uvm-section" aria-labelledby="uvmFeedbackHeading">
+    <div class="uvm-section-head">
+      <h2 id="uvmFeedbackHeading">Share Your Feedback</h2>
+      <span class="uvm-eyebrow">Your voice, your campus</span>
+    </div>
+    <div class="uvm-feedback-grid" id="uvmFeedbackGrid"></div>
+  </section>
+
+  <!-- ================= Quick Links Section ================= -->
+  <section class="uvm-section" aria-labelledby="uvmLinksHeading">
+    <div class="uvm-section-head">
+      <h2 id="uvmLinksHeading">Campus Quick Links</h2>
+      <span class="uvm-eyebrow">Frequently used resources</span>
+    </div>
+    <div class="uvm-quicklinks-grid" id="uvmQuickGrid"></div>
+  </section>
+
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  // Load brand fonts once (no-op if already present on the page/iframe)
+  if (!document.getElementById('uvm-font-link')) {
+    var link = document.createElement('link');
+    link.id = 'uvm-font-link';
+    link.rel = 'stylesheet';
+    link.href = 'https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Roboto:wght@400;500;700;900&display=swap';
+    document.head.appendChild(link);
+  }
+
+  /* ------------------------------------------------------------
+     DATA — edit these three arrays to update page content.
+     No other part of this script needs to change.
+  ------------------------------------------------------------ */
+
+  // Slide backgroundImage is optional; leave blank ('') for a solid
+  // Catamount Green panel, or provide an https image URL — each
+  // slide can use its own image.
+  //
+  // Recommended size: 1600×640px (2.5:1 landscape), exported as a
+  // JPG at ~70–80% quality, ideally under 300KB. Why:
+  //   - The carousel is full-width (up to 1148px visible, more on
+  //     wide monitors) but only 300–340px tall, so a wide/short
+  //     crop avoids letterboxing while background-size:cover fills
+  //     the frame at any viewport.
+  //   - 1600px wide covers standard desktop widths at 1x and holds
+  //     up reasonably on retina displays without a huge file size;
+  //     go to 2000px wide if file size allows.
+  //   - Keep the image's main subject weighted toward the right
+  //     two-thirds — the left side is covered by a dark gradient
+  //     (see .uvm-slide::before) so text stays readable, and that
+  //     gradient will visually swallow anything important on the
+  //     left edge of the photo.
+  //   - Because object position is fixed to "center," avoid
+  //     critical detail within ~10% of the top/bottom edges — it
+  //     can get cropped on narrower/taller viewports (mobile).
+  var SLIDES = [
+    {
+      tag: 'Upcoming Event',
+      title: 'Fall Career & Internship Fair',
+      body: 'Meet 120+ employers hiring Catamounts for internships and full-time roles across every college.',
+      date: 'Sept 17 · 11 AM–3 PM',
+      location: 'Davis Center, Grand Maple Ballroom',
+      ctaText: 'View event details',
+      ctaHref: 'https://www.uvm.edu/career/events',
+      backgroundImage: 'https://myuvm.w3.uvm.edu/experience/experience-assets/images/theme/bg-header-spring.jpg'
+    },
+    {
+      tag: 'New on Campus',
+      title: 'Extended Library Hours Begin This Week',
+      body: 'Howe Library is now open until 2 AM Sunday–Thursday through the end of the semester to support finals prep.',
+      date: 'Effective now',
+      location: 'Bailey/Howe Library',
+      ctaText: 'See library hours',
+      ctaHref: 'https://www.uvm.edu/library',
+      backgroundImage: ''
+    },
+    {
+      tag: 'Upcoming Event',
+      title: 'Sustainability Speaker Series: Climate & Community',
+      body: 'A conversation with Vermont policy leaders on regional climate resilience, hosted by the Gund Institute.',
+      date: 'Sept 24 · 5:30 PM',
+      location: 'Ira Allen Chapel',
+      ctaText: 'Reserve a seat',
+      ctaHref: 'https://www.uvm.edu/gund/events',
+      backgroundImage: ''
+    },
+    {
+      tag: 'New on Campus',
+      title: 'CATcard Mobile Now Available',
+      body: 'Add your CATcard to your phone wallet for dorm access, dining, and library check-out — no plastic required.',
+      date: 'Rolling out this month',
+      location: 'Campus-wide',
+      ctaText: 'Set up CATcard Mobile',
+      ctaHref: 'https://www.uvm.edu/catcard',
+      backgroundImage: ''
+    }
+  ];
+
+  var FEEDBACK_LINKS = [
+    {
+      title: 'Course & Instructor Evaluations',
+      body: 'Rate your fall courses before finals week. Takes about 5 minutes per course.',
+      href: 'https://www.uvm.edu/academicsuccess/course-evaluations'
+    },
+    {
+      title: 'Dining Services Feedback',
+      body: 'Tell us what\'s working (and what isn\'t) at UVM Dining locations across campus.',
+      href: 'https://www.uvm.edu/dining/feedback'
+    },
+    {
+      title: 'IT Help Desk Survey',
+      body: 'Recently opened a ticket? Let the IT team know how the experience went.',
+      href: 'https://www.uvm.edu/it/feedback'
+    },
+    {
+      title: 'Residential Life Suggestion Box',
+      body: 'Share ideas or concerns about your hall, room, or residential community.',
+      href: 'https://www.uvm.edu/reslife/feedback'
+    }
+  ];
+
+  var QUICK_LINKS = [
+    { label: 'Registrar', href: 'https://www.uvm.edu/registrar', icon: 'doc' },
+    { label: 'Financial Aid', href: 'https://www.uvm.edu/finaid', icon: 'coin' },
+    { label: 'Student Health', href: 'https://www.uvm.edu/health', icon: 'cross' },
+    { label: 'Advising', href: 'https://www.uvm.edu/academicsuccess', icon: 'chat' },
+    { label: 'Career Center', href: 'https://www.uvm.edu/career', icon: 'briefcase' },
+    { label: 'Library', href: 'https://www.uvm.edu/library', icon: 'book' },
+    { label: 'IT Help Desk', href: 'https://www.uvm.edu/it', icon: 'gear' },
+    { label: 'Parking & Transit', href: 'https://www.uvm.edu/transportation', icon: 'car' },
+    { label: 'CATcard Office', href: 'https://www.uvm.edu/catcard', icon: 'card' },
+    { label: 'Student Financial Services', href: 'https://www.uvm.edu/sfs', icon: 'bank' }
+  ];
+
+  // Single-topic spotlight, shown above "Share Your Feedback."
+  // Leave imageUrl empty to show a branded placeholder (with the V shield)
+  // until real photography is ready — swap in an https URL any time.
+  var SPOTLIGHT = {
+    eyebrow: 'Campus Initiative',
+    heading: 'Sustainability Is In Our DNA',
+    paragraphs: [
+      'UVM is a national leader in campus sustainability, from a carbon-neutral dining program to LEED-certified residence halls across the Burlington campus.',
+      'This semester, the Office of Sustainability is expanding the Green Fund to support 12 new student-led projects, and every UVM community member can apply.',
+      'Explore current projects, propose your own, or track campus-wide progress toward UVM\'s 2030 climate goals.'
+    ],
+    ctaText: 'Explore sustainability at UVM',
+    ctaHref: 'https://www.uvm.edu/sustainability',
+    imageUrl: '',
+    imageAlt: 'Students gathered outdoors on the UVM campus green'
+  };
+
+  var ICONS = {
+    doc: '<path d="M6 2h8l4 4v16H6V2z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M14 2v4h4" fill="none" stroke="currentColor" stroke-width="1.6"/>',
+    coin: '<circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 7v10M9 9.5h4.2a1.8 1.8 0 010 3.6H9M9 9.5c0-1 1-1.5 2-1.5" fill="none" stroke="currentColor" stroke-width="1.4"/>',
+    cross: '<path d="M12 3v18M3 12h18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>',
+    chat: '<path d="M4 5h16v11H9l-5 4V5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>',
+    briefcase: '<rect x="3" y="8" width="18" height="12" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 8V6a2 2 0 012-2h4a2 2 0 012 2v2" fill="none" stroke="currentColor" stroke-width="1.6"/>',
+    book: '<path d="M4 4.5C6 3.5 9 3.5 12 5c3-1.5 6-1.5 8-.5v15c-2-1-5-1-8 .5-3-1.5-6-1.5-8-.5v-15z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 5v15" stroke="currentColor" stroke-width="1.4"/>',
+    gear: '<circle cx="12" cy="12" r="3.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 3.5v2.3M12 18.2v2.3M20.5 12h-2.3M5.8 12H3.5M17.8 6.2l-1.6 1.6M7.8 16.2l-1.6 1.6M17.8 17.8l-1.6-1.6M7.8 7.8L6.2 6.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>',
+    car: '<path d="M4 16V11l2-4h12l2 4v5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="7.5" cy="16.5" r="1.6" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="16.5" cy="16.5" r="1.6" fill="none" stroke="currentColor" stroke-width="1.4"/>',
+    card: '<rect x="3" y="6" width="18" height="12" rx="1.6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3 10h18" stroke="currentColor" stroke-width="1.6"/>',
+    bank: '<path d="M4 10l8-5 8 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3.5 20h17" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>'
+  };
+
+  function el(tag, cls, html) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (html !== undefined) e.innerHTML = html;
+    return e;
+  }
+
+  /* ------------------------------------------------------------
+     Carousel
+  ------------------------------------------------------------ */
+  var track = document.getElementById('uvmTrack');
+  var dotsWrap = document.getElementById('uvmDots');
+  var prevBtn = document.getElementById('uvmPrev');
+  var nextBtn = document.getElementById('uvmNext');
+  var pauseBtn = document.getElementById('uvmPause');
+  var carouselEl = document.getElementById('uvmCarousel');
+  var current = 0;
+  var timer = null;
+  var AUTOPLAY_MS = 7000;
+  var isPaused = false;
+
+  SLIDES.forEach(function (s, i) {
+    var slide = el('div', 'uvm-slide');
+    slide.setAttribute('role', 'group');
+    slide.setAttribute('aria-roledescription', 'slide');
+    slide.setAttribute('aria-label', (i + 1) + ' of ' + SLIDES.length);
+    if (s.backgroundImage) {
+      slide.style.backgroundImage = 'url(' + s.backgroundImage + ')';
+    }
+    var content = el('div', 'uvm-slide-content');
+    content.innerHTML =
+      '<span class="uvm-slide-tag">' + s.tag + '</span>' +
+      '<h3>' + s.title + '</h3>' +
+      '<p>' + s.body + '</p>' +
+      '<div class="uvm-slide-meta"><span>&#128197; ' + s.date + '</span><span>&#128205; ' + s.location + '</span></div>' +
+      '<a class="uvm-slide-cta" href="' + s.ctaHref + '" target="_blank" rel="noopener">' + s.ctaText + ' &rarr;</a>';
+    slide.appendChild(content);
+    track.appendChild(slide);
+
+    var dot = el('button', 'uvm-dot');
+    dot.type = 'button';
+    dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+    dot.addEventListener('click', function () { goTo(i); resetAutoplay(); });
+    dotsWrap.appendChild(dot);
+  });
+
+  var dots = dotsWrap.querySelectorAll('.uvm-dot');
+
+  function render() {
+    track.style.transform = 'translateX(-' + (current * 100) + '%)';
+    dots.forEach(function (d, i) {
+      d.setAttribute('aria-current', i === current ? 'true' : 'false');
+    });
+  }
+
+  function goTo(i) {
+    current = (i + SLIDES.length) % SLIDES.length;
+    render();
+  }
+
+  function next() { goTo(current + 1); }
+  function prev() { goTo(current - 1); }
+
+  function startAutoplay() {
+    if (isPaused) return;
+    stopAutoplay();
+    timer = setInterval(next, AUTOPLAY_MS);
+  }
+  function stopAutoplay() {
+    if (timer) clearInterval(timer);
+    timer = null;
+  }
+  function resetAutoplay() {
+    if (!isPaused) startAutoplay();
+  }
+
+  prevBtn.addEventListener('click', function () { prev(); resetAutoplay(); });
+  nextBtn.addEventListener('click', function () { next(); resetAutoplay(); });
+
+  pauseBtn.addEventListener('click', function () {
+    isPaused = !isPaused;
+    pauseBtn.innerHTML = isPaused ? '&#9654;' : '&#10073;&#10073;';
+    pauseBtn.setAttribute('aria-label', isPaused ? 'Resume automatic rotation' : 'Pause automatic rotation');
+    if (isPaused) { stopAutoplay(); } else { startAutoplay(); }
+  });
+
+  carouselEl.addEventListener('mouseenter', stopAutoplay);
+  carouselEl.addEventListener('mouseleave', resetAutoplay);
+  carouselEl.addEventListener('focusin', stopAutoplay);
+  carouselEl.addEventListener('focusout', resetAutoplay);
+
+  // Basic swipe support
+  var touchStartX = null;
+  track.addEventListener('touchstart', function (e) { touchStartX = e.touches[0].clientX; }, { passive: true });
+  track.addEventListener('touchend', function (e) {
+    if (touchStartX === null) return;
+    var dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 40) { dx < 0 ? next() : prev(); resetAutoplay(); }
+    touchStartX = null;
+  }, { passive: true });
+
+  render();
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    startAutoplay();
+  }
+
+  /* ------------------------------------------------------------
+     Spotlight (single topic, text + image)
+  ------------------------------------------------------------ */
+  var spotlightText = document.getElementById('uvmSpotlightText');
+  var spotlightMedia = document.getElementById('uvmSpotlightMedia');
+
+  var spotlightParas = SPOTLIGHT.paragraphs.map(function (p) { return '<p>' + p + '</p>'; }).join('');
+  spotlightText.innerHTML =
+    '<span class="uvm-slide-tag">' + SPOTLIGHT.eyebrow + '</span>' +
+    '<h3 id="uvmSpotlightHeading">' + SPOTLIGHT.heading + '</h3>' +
+    spotlightParas +
+    '<a class="uvm-spotlight-cta" href="' + SPOTLIGHT.ctaHref + '" target="_blank" rel="noopener">' + SPOTLIGHT.ctaText + ' &rarr;</a>';
+
+  if (SPOTLIGHT.imageUrl) {
+    var img = document.createElement('img');
+    img.src = SPOTLIGHT.imageUrl;
+    img.alt = SPOTLIGHT.imageAlt || '';
+    spotlightMedia.appendChild(img);
+  } else {
+    spotlightMedia.classList.add('uvm-placeholder');
+    spotlightMedia.innerHTML =
+      '<svg viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
+      '<path d="M50 2L95 20V55C95 90 72 108 50 118C28 108 5 90 5 55V20L50 2Z" fill="#FFFFFF" opacity="0.14"/>' +
+      '<text x="50" y="80" font-family="Lora, serif" font-size="60" fill="#FFFFFF" fill-opacity="0.55" text-anchor="middle">V</text>' +
+      '</svg>' +
+      '<span class="uvm-placeholder-label">Image coming soon</span>';
+    spotlightMedia.setAttribute('role', 'img');
+    spotlightMedia.setAttribute('aria-label', SPOTLIGHT.imageAlt || 'Placeholder image');
+  }
+
+  /* ------------------------------------------------------------
+     Feedback cards
+  ------------------------------------------------------------ */
+  var feedbackGrid = document.getElementById('uvmFeedbackGrid');
+  FEEDBACK_LINKS.forEach(function (f) {
+    var card = el('a', 'uvm-feedback-card');
+    card.href = f.href;
+    card.target = '_blank';
+    card.rel = 'noopener';
+    card.innerHTML =
+      '<h3>' + f.title + '</h3>' +
+      '<p>' + f.body + '</p>' +
+      '<span class="uvm-arrow">Give feedback &rarr;</span>';
+    feedbackGrid.appendChild(card);
+  });
+
+  /* ------------------------------------------------------------
+     Quick links
+  ------------------------------------------------------------ */
+  var quickGrid = document.getElementById('uvmQuickGrid');
+  QUICK_LINKS.forEach(function (q) {
+    var a = el('a', 'uvm-quicklink');
+    a.href = q.href;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    var iconSvg = '<span class="uvm-quicklink-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">' + (ICONS[q.icon] || '') + '</svg></span>';
+    a.innerHTML = iconSvg + '<span>' + q.label + '</span>';
+    quickGrid.appendChild(a);
+  });
+
+})();
+</script>
