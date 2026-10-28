@@ -1,0 +1,273 @@
+<!-- ============================================================
+     University of Vermont — Ellucian Experience Card
+     Component: Compact "featured event" tile
+     Purpose: Lives in a small Experience CARD placement (dashboard
+       tile, not a full page). Mirrors the first item from the
+       banner carousel on student-life.html and, when clicked,
+       navigates the whole browser window (not just this iframe)
+       to the full Student Life experience page.
+     Setup required:
+       1. Set CONFIG.targetUrl below to the published URL of the
+          student-life.html Experience Page (Ellucian assigns this
+          once the page is published — it won't exist until then).
+       2. Keep CONFIG in sync with SLIDES[0] in student-life.html
+          any time that first event changes. They're separate
+          Experience components (card vs. page) so this can't be
+          done automatically — no shared JS between the two iframes.
+   ============================================================ -->
+<div id="uvm-mini-card-root">
+
+  <style>
+    #uvm-mini-card-root {
+      --uvm-green: #154734;
+      --uvm-green-dark: #0e3325;
+      --uvm-gold: #FFD100;
+      --uvm-sky: #489FDF;
+      --uvm-white: #FFFFFF;
+      --uvm-fog: #F7F7F7;
+      font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      box-sizing: border-box;
+      max-width: 380px;
+    }
+    #uvm-mini-card-root *, #uvm-mini-card-root *::before, #uvm-mini-card-root *::after {
+      box-sizing: inherit;
+    }
+    #uvm-mini-card-root .uvm-card-link {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      border-radius: 12px;
+      outline-offset: 3px;
+    }
+    #uvm-mini-card-root .uvm-card-link:focus-visible {
+      outline: 3px solid var(--uvm-sky);
+    }
+    #uvm-mini-card-root .uvm-mini-card {
+      position: relative;
+      background: linear-gradient(155deg, var(--uvm-green) 0%, var(--uvm-green-dark) 100%);
+      background-size: cover;
+      background-position: center;
+      border-radius: 12px;
+      padding: 18px 20px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(14, 51, 37, 0.18);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+    #uvm-mini-card-root .uvm-mini-card.uvm-has-image::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(155deg, rgba(14,51,37,0.92) 20%, rgba(14,51,37,0.65) 65%, rgba(14,51,37,0.4) 100%);
+      z-index: 0;
+    }
+    #uvm-mini-card-root .uvm-mini-card > * {
+      position: relative;
+      z-index: 1;
+    }
+    #uvm-mini-card-root .uvm-card-link:hover .uvm-mini-card,
+    #uvm-mini-card-root .uvm-card-link:focus-visible .uvm-mini-card {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(14, 51, 37, 0.3);
+    }
+    #uvm-mini-card-root .uvm-mini-card::after {
+      content: "";
+      position: absolute;
+      top: -30px;
+      right: -30px;
+      width: 120px;
+      height: 120px;
+      background: radial-gradient(circle, rgba(255,209,0,0.16) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    #uvm-mini-card-root .uvm-mini-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    #uvm-mini-card-root .uvm-mini-tag {
+      display: inline-block;
+      background: var(--uvm-gold);
+      color: var(--uvm-green-dark);
+      font-weight: 700;
+      font-size: 0.66rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 999px;
+    }
+    #uvm-mini-card-root .uvm-mini-countdown {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--uvm-white);
+      white-space: nowrap;
+    }
+    #uvm-mini-card-root .uvm-mini-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #7CDB8A;
+      flex-shrink: 0;
+    }
+    #uvm-mini-card-root .uvm-mini-dot.soon { background: var(--uvm-gold); }
+    #uvm-mini-card-root .uvm-mini-dot.today {
+      background: var(--uvm-gold);
+      animation: uvm-pulse 1.4s ease-in-out infinite;
+    }
+    @keyframes uvm-pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(255, 209, 0, 0.55); }
+      50% { box-shadow: 0 0 0 5px rgba(255, 209, 0, 0); }
+    }
+
+    #uvm-mini-card-root h3 {
+      font-family: 'Lora', Georgia, serif;
+      color: var(--uvm-white);
+      font-size: 1.15rem;
+      line-height: 1.25;
+      margin: 0 0 6px;
+      font-weight: 600;
+    }
+    #uvm-mini-card-root p {
+      color: rgba(255,255,255,0.82);
+      font-size: 0.85rem;
+      line-height: 1.45;
+      margin: 0 0 12px;
+    }
+    #uvm-mini-card-root .uvm-mini-meta {
+      color: rgba(255,255,255,0.75);
+      font-size: 0.76rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    #uvm-mini-card-root .uvm-mini-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      color: var(--uvm-gold);
+      font-weight: 700;
+      font-size: 0.82rem;
+    }
+    #uvm-mini-card-root .uvm-card-link:hover .uvm-mini-cta {
+      text-decoration: underline;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #uvm-mini-card-root .uvm-mini-dot.today { animation: none; }
+      #uvm-mini-card-root .uvm-mini-card { transition: none; }
+    }
+  </style>
+
+  <a class="uvm-card-link" id="uvmMiniLink" href="#" aria-labelledby="uvmMiniHeading">
+    <div class="uvm-mini-card">
+      <div class="uvm-mini-head">
+        <span class="uvm-mini-tag" id="uvmMiniTag"></span>
+        <span class="uvm-mini-countdown" id="uvmMiniCountdown"></span>
+      </div>
+      <h3 id="uvmMiniHeading"></h3>
+      <p id="uvmMiniBody"></p>
+      <div class="uvm-mini-meta" id="uvmMiniMeta"></div>
+      <span class="uvm-mini-cta">View on Student Life &rarr;</span>
+    </div>
+  </a>
+
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  if (!document.getElementById('uvm-font-link')) {
+    var link = document.createElement('link');
+    link.id = 'uvm-font-link';
+    link.rel = 'stylesheet';
+    link.href = 'https://fonts.googleapis.com/css2?family=Lora:wght@600&family=Roboto:wght@400;700&display=swap';
+    document.head.appendChild(link);
+  }
+
+  /* ------------------------------------------------------------
+     CONFIG — mirror this from SLIDES[0] in student-life.html.
+     isoDate drives the live countdown badge; keep it in ISO
+     8601 format (YYYY-MM-DDTHH:MM:SS) in the campus's local time.
+  ------------------------------------------------------------ */
+  var CONFIG = {
+    tag: 'Upcoming Event',
+    title: 'Fall Career & Internship Fair',
+    body: 'Meet 120+ employers hiring Catamounts for internships and full-time roles across every college.',
+    isoDate: '2026-09-17T11:00:00',
+    displayDate: 'Sept 17 · 11 AM',
+    location: 'Davis Center, Grand Maple Ballroom',
+    // Optional. Leave '' for the plain Catamount Green gradient, or
+    // provide an https image URL — ideally the same image used for
+    // this event's slide on student-life.html, for visual
+    // consistency across the two components.
+    // Recommended size: 760×400px (~1.9:1), JPG, under 150KB — this
+    // card is far smaller than the full-page carousel, so a smaller
+    // source image is fine and keeps the tile loading fast on a
+    // dashboard with several other cards.
+    imageUrl: 'https://myuvm.w3.uvm.edu/experience/experience-assets/images/theme/bg-header-spring.jpg',
+    // TODO: replace with the published URL of the student-life.html
+    // Experience Page once it exists in your Ellucian environment.
+    targetUrl: 'https://experience.elluciancloud.com/uvm/page/student_life'
+  };
+
+  document.getElementById('uvmMiniTag').textContent = CONFIG.tag;
+  document.getElementById('uvmMiniHeading').textContent = CONFIG.title;
+  document.getElementById('uvmMiniBody').textContent = CONFIG.body;
+  document.getElementById('uvmMiniMeta').innerHTML =
+    '<span>&#128197; ' + CONFIG.displayDate + '</span><span>&#128205; ' + CONFIG.location + '</span>';
+
+  if (CONFIG.imageUrl) {
+    var cardEl = document.querySelector('#uvm-mini-card-root .uvm-mini-card');
+    cardEl.style.backgroundImage = 'url(' + CONFIG.imageUrl + ')';
+    cardEl.classList.add('uvm-has-image');
+  }
+
+  // Clicking anywhere on the card navigates the CURRENT window
+  // (target="_top") so it replaces the whole portal view rather
+  // than opening a new tab or being trapped in this card's iframe.
+  var linkEl = document.getElementById('uvmMiniLink');
+  linkEl.href = CONFIG.targetUrl;
+  linkEl.target = '_top';
+  linkEl.rel = 'noopener';
+
+  // Reactive countdown: recalculates against "now" every time the
+  // card loads, and color-codes the status dot as the date nears.
+  function renderCountdown() {
+    var now = new Date();
+    var eventDate = new Date(CONFIG.isoDate);
+    var msPerDay = 1000 * 60 * 60 * 24;
+    var diffDays = Math.ceil((eventDate - now) / msPerDay);
+
+    var dotClass = 'uvm-mini-dot';
+    var label;
+
+    if (diffDays > 3) {
+      label = 'In ' + diffDays + ' days';
+    } else if (diffDays > 1) {
+      dotClass += ' soon';
+      label = 'In ' + diffDays + ' days';
+    } else if (diffDays === 1) {
+      dotClass += ' soon';
+      label = 'Tomorrow';
+    } else if (diffDays === 0) {
+      dotClass += ' today';
+      label = 'Today';
+    } else {
+      label = 'Recently held';
+    }
+
+    document.getElementById('uvmMiniCountdown').innerHTML =
+      '<span class="' + dotClass + '"></span>' + label;
+  }
+  renderCountdown();
+
+})();
+</script>
