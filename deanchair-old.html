@@ -1,0 +1,593 @@
+<html><head><style type="text/css">
+  ul{ 
+    list-style-type: none;
+  }
+  a:link { 
+    text-decoration: none; 
+    color: #154734;    
+} 
+a:visited { 
+    text-decoration: none; 
+    color: #154734;    
+} 
+a:hover { 
+    text-decoration: none; 
+    color: green;    
+} 
+em { 
+    display: block;
+    padding-left: 25px;
+    font-size: small;
+}
+  #faculty-font {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1em;
+  }
+  #faculty-font h1 {
+    font-size: 1.3em;
+    color: #cc9933;
+    border-bottom: thin dashed #cc9933;
+  }
+  /*Video Clip Icon Call */
+  @font-face {
+    font-family: "WebSymbolsRegular";
+    font-weight: normal;
+    font-style: normal;
+    src: url("https://www.uvm.edu/~myuvm/myuvmzoo/faculty/facultyresources/css/websymbols/websymbols-regular-webfont.eot");
+    src: url("https://www.uvm.edu/~myuvm/myuvmzoo/faculty/facultyresources/css/websymbols/websymbols-regular-webfont.eot?#iefix")
+        format("embedded-opentype"),
+      url("https://www.uvm.edu/~myuvm/myuvmzoo/faculty/facultyresources/css/websymbols/websymbols-regular-webfont.woff")
+        format("woff"),
+      url("https://www.uvm.edu/~myuvm/myuvmzoo/faculty/facultyresources/css/websymbols/websymbols-regular-webfont.ttf")
+        format("truetype"),
+      url("https://www.uvm.edu/~myuvm/myuvmzoo/faculty/facultyresources/css/websymbols/websymbols-regular-webfont.svg#WebSymbolsRegular")
+        format("svg");
+  }
+  #video-help-icon {
+    font-family: FontAwesome;
+    font-size: 20px;
+    margin-left: 5px;
+  }
+  #video-help-icon:hover {
+    color: #8bb138;
+  }
+  #banner-help-icon {
+    font-family: FontAwesome;
+    font-size: 36px;
+    margin-left: 30px;
+    margin-top: 3px;
+    float: left;
+  }
+  #banner-help-icon:hover {
+    color: #8bb138;
+  }
+  #banner-help-text {
+    float: left;
+    margin-left: 5px;
+    margin-top: 5px;
+    font-size: 11px;
+    width: 170px;
+  }
+  #banner-help-text:hover {
+    color: #8bb138;
+  }
+  #pane-left {
+    float: left;
+    width: 30%;
+    margin-left: 15px;
+    min-width: 261px;
+  }
+  #pane-left ul {
+    font-size: 1.1em;
+    margin-top: -3px;
+    margin-left: 8px;
+    margin-bottom: -3px;
+  }
+  #pane-left ul li {
+    margin-bottom: 1em;
+  }
+  #pane-right {
+    background-color: #f8f8ec;
+    float: left;
+    width: 50%;
+    padding: 2em;
+    margin-left: 15px;
+  }
+  #pane-right ul {
+    font-size: 1.1em;
+    margin-left: -10px;
+  }
+  #pane-right ul li {
+    margin-bottom: 1em;
+    margin-left: 20px;
+  }
+  #banner-dean {
+    float: left;
+    width: 90%;
+    padding: 2em;
+    margin-left: 15px;
+  }
+  #section-break {
+    float: left;
+    width: 97%;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+  #greenButton {
+    padding: 10px 10px 10px 10px;
+    font-family: "Cordia New", Verdana, Lucida, Geneva, Helvetica, Arial,
+      sans-serif;
+    z-index: 5;
+    text-align: left;
+    vertical-align: middle;
+    font-weight: 100;
+    font-size: 15px;
+  }
+  #greenButton a {
+    text-decoration: none;
+    color: #ffffff;
+  }
+  #greenButton a:hover {
+    font-size: 20px;
+  }
+  #hint-text {
+    font-size: 12px;
+  }
+  .myButtonLink2 {
+    display: block;
+    width: 258px;
+    height: 73px;
+    background: url("https://myuvm.w3.uvm.edu/myuvm/prodpages/deanchair/images/button-id.png")
+      bottom;
+    text-indent: -99999px;
+    margin-left: -10px;
+    margin-top: -20px;
+  }
+  .myButtonLink2:hover {
+    background-position: 0 0;
+    background-color: transparent;
+    border-style: none;
+  }
+  .myButtonLinkB {
+    display: block;
+    width: 258px;
+    height: 73px;
+    background: url("https://myuvm.w3.uvm.edu/myuvm/prodpages/deanchair/images/button-selectcourse.png")
+      bottom;
+    text-indent: -99999px;
+    margin-left: -10px;
+    margin-top: -20px;
+  }
+  .myButtonLinkB:hover {
+    background-position: 0 0;
+    background-color: transparent;
+    border-style: none;
+  }
+  .myButtonLinkC {
+    display: block;
+    width: 258px;
+    height: 73px;
+    background: url("https://myuvm.w3.uvm.edu/myuvm/prodpages/deanchair/images/button-newterm.png")
+      bottom;
+    text-indent: -99999px;
+  }
+  .myButtonLinkC:hover {
+    background-position: 0 0;
+    background-color: transparent;
+    border-style: none;
+  }
+  .myButtonLinkFG {
+    display: block;
+    width: 265px;
+    height: 96px;
+    background: url("https://myuvm.w3.uvm.edu/myuvm/prodpages/deanchair/images/button-gradechange.png")
+      bottom;
+    text-indent: -99999px;
+    margin-left: -10px;
+    margin-top: -20px;
+  }
+  .myButtonLinkFG:hover {
+    background-position: -6px 0px;
+    background-color: transparent;
+    border-style: none;
+  }
+  .myButtonLinkA {
+    display: block;
+    width: 265px;
+    height: 96px;
+    background: url("https://myuvm.w3.uvm.edu/myuvm/prodpages/deanchair/images/button-gradeincomplete.png")
+      bottom;
+    text-indent: -99999px;
+    margin-left: -10px;
+    margin-top: -20px;
+  }
+  .myButtonLinkA:hover {
+    background-position: -6px 0px;
+    background-color: transparent;
+    border-style: none;
+  }
+  .myButtonLink {
+    display: block;
+    width: 258px;
+    height: 72px;
+    background: url("https://myuvm.w3.uvm.edu/myuvm/prodpages/deanchair/images/button-proofsoc.png")
+      bottom;
+    text-indent: -99999px;
+    margin-left: -10px;
+    margin-top: -20px;
+  }
+  .myButtonLink:hover {
+    background-position: 0 0;
+    background-color: transparent;
+    border-style: none;
+  }
+</style>
+</head><body><div id="faculty-font">
+  <div id="section-break">
+    <h1>ADVISING TOOLS</h1>
+  </div>
+  <div id="pane-left">
+    <div id="greenButton">
+      <a alt="student selection" class="myButtonLink2" href="https://aisweb5.uvm.edu/ssomanager/c/SSB?pkg=bwlkoids.P_FacIDSel" target="_parent">Student ID Selection</a>
+    </div>
+    <br>
+    <ul>
+      <li>
+        <a alt="student status change form" href="https://www.uvm.edu/registrar/change-of-student-status" target="_parent">Change of Student Status</a>
+      </li>
+      <li>
+        <a alt="student advisor notes" href="https://aisweb5.uvm.edu/ssomanager/c/SSB?pkg=rg_pers_dyn.P_DispHeader" target="_parent">Enter Student Advisor Notes</a>
+      </li>
+      <li>
+        <a alt="readmit student" href="https://aisweb5.uvm.edu/ssomanager/c/SSB?pkg=rgwk_readmit.P_Readmit" target="_parent">Readmit a Student</a>
+      </li>
+      <li>
+        <a alt="remove advising hold" href="https://aisweb5.uvm.edu/ssomanager/c/SSB?pkg=hwwkfadv.P_AdvHold" target="_parent">Remove an Advising Hold</a>
+      </li>
+      <li>
+        <a alt="run a degree audit" href="https://dw-prod.uvm.edu:8444" target="_parent">Run a <strong>degree audit</strong> for your advisee</a>
+      </li>
+      <li>
+        <a alt="update academic standing" href="https://aisweb5.uvm.edu/ssomanager/c/SSB?pkg=rgwk_upd_shrttrm_astd.P_Update" target="_parent">Update academic standing</a>
+      </li>
+      <li>
+        <a alt="select new term" href="https://aisweb5.uvm.edu/ssomanager/c/SSB?pkg=bwlkostm.P_FacSelTerm" target="_parent">Select a New Term</a>
+      </li>
+      <br>
+    </ul>
+  </div>
+  <div id="pane-right">
+    <h1>Advising Reports</h1>
+    <ul>
+      <li>
+        <a alt="academic alerts" href="https://aisweb5.uvm.edu/ssomanager/c/SSB?pkg=hwwkdmtw.P_DispStudents" target="_parent"><strong>Academic Alerts</strong></a><br>
+        <em>Comprehensive list of all students in your department (chairs) or
+          unit (deans) who have been issued an academic alert. Students will
+          appear once for each course in which they have received an alert.</em>
+      </li>
+      <li>
+        <a alt="advisor advisee list" href="https://aisweb5.uvm.edu/ssomanager/c/SSB?pkg=hwwkdadv.P_DispAdvisees" target="_parent"><strong>Advisor/Advisee List</strong></a><br>
+        <em>Summary of advising assignments in your department (chairs) or unit
+          (deans) by advisor.</em>
+      </li>
+      <li>
+        <a alt="advisor notes by student" href="https://aisweb5.uvm.edu/ssomanager/c/SSB?pkg=rg_pers_dyn.P_DispHeader" target="_parent"><strong>Advisor Notes (Summarized by Student)</strong></a><br>
+        <em>View advisor notes submitted for an individual student.</em>
+      </li>
+      <li>
+        <a alt="advisor notes by advisor" href="https://aisweb5.uvm.edu/ssomanager/c/SSB?pkg=rgwk_stu_notes.P_DispStudents" target="_parent"><strong>Advisor Notes (Summarized by Advisor)</strong></a><br>
+        <em>View data regarding the number of notes submitted by advisors in your
+          unit.</em>
+      </li>
+      <li>
+        <a alt="retention report" href="https://aisweb5.uvm.edu/ssomanager/c/SSB?pkg=hwwkdrpt.P_RunReten" target="_parent"><strong>Registered Students Sending Transcripts</strong></a><br>
+        <em>Customizable report returns a list of students who have requested
+          transcripts.</em>
+      </li>
+      <li>
+        <a alt="students by major minor concentration" href="https://aisweb5.uvm.edu/ssomanager/c/SSB?pkg=hwwkdmmc.P_DispOptions" target="_parent"><strong>Students by Major, Minor, Concentration</strong></a><br>
+        <em>Customizable report returns a list of students for selected academic
+          program(s).</em>
+      </li>
+      <li>
+        <a alt="students with less than twelve credits" href="https://aisweb5.uvm.edu/ssomanager/c/SSB?pkg=RGWK_STST_AS.P_RunStudentStstLs12Credits" target="_parent"><strong>Students with &lt; 12 Credits</strong></a><br>
+        <em>List of students not registered (or registered as less than full
+          time) for the next major term.</em>
+      </li>
+      <li>
+        <a alt="New Incoming/Readmitted Students with less than 12 Credits" href="https://aisweb5.uvm.edu/ssomanager/c/SSB?pkg=RGWK_STST_NEWSTUD.P_RunStudentStstLs12Credits" target="_parent"><strong>New Incoming/Readmitted Students with &lt; than 12 Credits</strong></a><br>
+        <em>Reports new incoming/readmitted students registered for less than 12
+          hours, including 0 credits, for the selected term.</em>
+      </li>
+      <li>
+        <a alt="pending withdrawal requests" href="https://aisweb5.uvm.edu/ssomanager/c/SSB?pkg=rgwk_wd_pending.P_DispStudents" target="_parent"><strong>View Pending Withdrawal Requests</strong></a><br>
+        <em>Summary of pending withdrawal requests.</em>
+      </li>
+      <li>
+        <a alt="admit transfer student transfer evaluation report" href="https://aisweb5.uvm.edu/ssomanager/c/SSB?pkg=hwwkafer.p_transfer_worksheet" target="_parent"><strong>Admit/Transfer Student Transfer Evaluation Report</strong></a>
+      </li>
+    </ul>
+  </div>
+  <div id="section-break">
+    <h1>REGISTRATION TOOLS</h1>
+  </div>
+  <div id="pane-left">
+    <div id="greenButton">
+      <a alt="select course" class="myButtonLinkB" href="https://aisweb5.uvm.edu/ssomanager/c/SSB?pkg=bwlkocrn.P_FacChmnCrnSel" target="_parent">Select Course</a>
+    </div>
+    <span id="hint-text"><i><b>The Select Course button above can also be used to display grades.</b></i></span><br>
+    &nbsp;<br>
+    <ul>
+      <li>
+        <a alt="view roster" href="https://aisweb5.uvm.edu/ssomanager/c/SSB?pkg=bwlkfcwl.P_FacClaListSum" target="_parent">View Roster</a>
+      </li>
+      <li>
+        <a alt="select course in new term" href="https://aisweb5.uvm.edu/ssomanager/c/SSB?pkg=bwlkostm.P_FacSelTerm" target="_parent">Select a Course in a New Term</a>
+      </li>
+      <li>
+        <a alt="report generator guide" href="https://myuvm.w3.uvm.edu/myuvm/prodpages/resources/What_is_repgen.pdf" onclick="_gaq.push(['_trackEvent', 'Faculty', 'Dean Tools', 'RepGen Guide']);" target="_parent">RepGen Guide</a>
+      </li>
+      <br>
+    </ul>
+  </div>
+  <div id="pane-right">
+    <h1>Student Processing</h1>
+    <ul>
+      <li>
+        <a alt="approve late student withdrawals" href="https://aisweb5.uvm.edu/ssomanager/c/SSB?pkg=bwlkfrad.P_FacAddDropCrse" target="_parent"><strong>Approve Late Student Withdrawal</strong></a>
+      </li>
+      <li>
+        <a alt="override maximumm credits" href="https://aisweb5.uvm.edu/ssomanager/c/SSB?pkg=rgwk_hours_over.P_Override" target="_parent"><strong>Override Maximum Credits Allowed</strong></a>
+      </li>
+      <li>
+        <a alt="readmit student" href="https://aisweb5.uvm.edu/ssomanager/c/SSB?pkg=rgwk_readmit.P_Readmit" target="_parent"><strong>Readmit a Student</strong></a>
+      </li>
+      <li>
+        <a alt="remove advising hold" href="https://aisweb5.uvm.edu/ssomanager/c/SSB?pkg=hwwkfadv.P_AdvHold" target="_parent"><strong>Remove an Advising Hold</strong></a>
+      </li>
+    </ul>
+    <div style="margin-left: 0px">
+      <div id="greenButton">
+        <a alt="select new term" class="myButtonLinkC" href="https://aisweb5.uvm.edu/ssomanager/c/SSB?pkg=bwlkostm.P_FacSelTerm" target="_parent">Select a New Term</a>
+      </div>
+    </div>
+  </div>
+  <div id="section-break">
+    <br>
+    <h1>GRADING TOOLS</h1>
+  </div>
+  <div id="pane-left">
+    <div id="greenButton">
+      <a alt="approve grade changes" class="myButtonLinkFG" href="https://aisweb5.uvm.edu/ssomanager/c/SSB?pkg=hwwkgreq.P_DeanChgGrd" target="_parent">Approve Grade Change Requests</a>
+    </div>
+    <br>
+    <ul>
+      <li>
+        <a alt="all grade change requests" href="https://aisweb5.uvm.edu/ssomanager/c/SSB?pkg=hwwkgvrq.P_DeanView" target="_parent">All Grade Change Requests</a>
+      </li>
+    </ul>
+    <a alt="video guide" href="https://youtu.be/CcsMI3KKdr0" style="text-decoration: none" target="_parent"><img src="https://myuvm.w3.uvm.edu/myuvm/prodpages/deanchair/images/yt-icon.png" style="height: 30px"></a>
+    <a alt="video guide" href="https://youtu.be/CcsMI3KKdr0" style="text-decoration: none" target="_parent"><span id="video-help-text">Watch a tutorial about this topic.</span></a><br>
+    <br>
+    <br>
+    <div id="greenButton">
+      <a alt="approve incompletes" class="myButtonLinkA" href="https://aisweb5.uvm.edu/ssomanager/c/SSB?pkg=hwwkireq.P_DeanAprInc" target="_parent">Approve Incomplete Grade Requests</a>
+    </div>
+    <br>
+    <ul>
+      <li>
+        <a alt="all incomplete grade requests" href="https://aisweb5.uvm.edu/ssomanager/c/SSB?pkg=hwwkireq.P_DeanSearch" target="_parent">All Incomplete Grade Requests</a>
+      </li>
+    </ul>
+  </div>
+  <div id="pane-right">
+    <h1>Grade Reports</h1>
+    <ul>
+      <li>
+        <a alt="administrative failure report" href="https://aisweb5.uvm.edu/ssomanager/c/SSB?pkg=hwwkdrpt.P_RunAdminF" target="_parent"><strong>Administrative F Report</strong></a>
+      </li>
+      <li>
+        <a alt="prerequisite failure report" href="https://serval.uvm.edu/~rgweb/sfrrgam.lis" target="_parent"><strong>Students Who Failed Prerequisites</strong></a>
+      </li>
+      <li>
+        <a alt="commencement report" href="https://aisweb5.uvm.edu/ssomanager/c/SSB?pkg=hwwkcmmct.P_RunCmmctReport" target="_parent"><strong>Commencement Report</strong></a>
+      </li>
+      <li>
+        <a alt="graduation change report" href="https://myuvm.w3.uvm.edu/myuvm/prodpages/forms/graduation_change.html" target="_parent"><strong>Graduation Change Request</strong></a>
+      </li>
+      <li>
+        <a alt="grade distribution report" href="https://aisweb5.uvm.edu/ssomanager/c/SSB?pkg=hwwkdrpt.P_RunGradeDist" target="_parent"><strong>Grade Distribution</strong></a>
+      </li>
+      <li>
+        <a alt="missing grade report" href="https://aisweb5.uvm.edu/ssomanager/c/SSB?pkg=hwwkdrpt.P_MissingGradeRpt" target="_parent"><strong>Missing Grades</strong></a><br>
+        <em>Comprehensive list of all courses (Deans) or all courses in your
+          department (Chairs) missing grades. Courses with more than 75% of the
+          grades missing appear in red.</em>
+      </li>
+      <li>
+        <a alt="graduating senior missing grade report" href="https://aisweb5.uvm.edu/ssomanager/c/SSB?pkg=hwwkdrpt.P_MissingSrGradeRpt" target="_parent"><strong>Graduating Seniors Missing Grades</strong></a><br>
+        <em>List of missing grades for potential graduates by academic unit.
+          Students in multiple units will appear twice on the list.</em>
+      </li>
+      <li>
+        <a alt="grade resolution report" href="https://aisweb5.uvm.edu/ssomanager/c/SSB?pkg=hwwkdrpt.P_RunIXCM" target="_parent"><strong>Grade Resolution Report (I/XC/M/SP/UP)</strong></a><br>
+        <em>Lists students with incomplete grades to be used to support grade
+          resolution.</em>
+      </li>
+    </ul>
+  </div>
+  <div id="section-break">
+    <br>
+    <h1>SCHEDULE OF COURSES TOOLS</h1>
+  </div>
+  <div id="pane-left">
+    <div id="greenButton">
+      <a alt="proof your courses" class="myButtonLink" href="https://aisweb5.uvm.edu/ssomanager/c/SSB?pkg=twbkwbis.P_GenMenu?name=bmenu.P_SOC" target="_parent">Proof Your Courses</a>
+    </div>
+    <br>
+    <ul>
+      <li>
+        <a alt="course action form" href="https://www.uvm.edu/provost/course-action-forms" target="_parent">CourseLeaf: The New Course Action Form</a>
+      </li>
+      <li>
+        <a alt="fall twenty twenty three schedule of courses timeline" href="https://myuvm.w3.uvm.edu/myuvm/prodpages/deanchair/socTimelineFall.html" target="_parent">Fall 2024 SOC Timeline</a>
+      </li>
+      <li>
+        <a alt="summer twenty twenty four schedule of courses timeline" href="https://myuvm.w3.uvm.edu/myuvm/prodpages/deanchair/socTimeline_2024_summer.html" target="_parent">Summer 2024 SOC Timeline</a>
+      </li>
+      <li>
+        <a alt="spring twenty twenty four schedule of courses timeline" href="https://myuvm.w3.uvm.edu/myuvm/prodpages/deanchair/socTimeline.html" target="_parent">Spring 2024 SOC Timeline</a>
+      </li>
+      <li>
+        <a alt="section change request" href="https://myuvm.w3.uvm.edu/myuvm/prodpages/forms/soc_change_request_ad.html" target="_parent">Request a Change to a Section</a>
+      </li>
+      <li>
+        <a alt="new section request" href="https://myuvm.w3.uvm.edu/myuvm/prodpages/forms/soc_newsection_request_ad.html" target="_parent">Request a New Section</a>
+      </li>
+      <li>
+        <a alt="room change request" href="https://myuvm.w3.uvm.edu/myuvm/prodpages/forms/room_change_request_ad.html" target="_parent">Request a Room Change</a>
+      </li>
+      <li>
+        <a alt="general purpose classrooms" href="https://emsweb.uvm.edu/EMSWebApp/BrowseForSpace.aspx" target="_parent">General Purpose Classrooms</a>
+      </li>
+      <li>
+        <a alt="standard meeting patterns" href="https://www.uvm.edu/registrar/standard-meeting-patterns" target="_parent">Standard Meeting Patterns</a>
+      </li>
+      <li>
+        <a alt="banner schedule form instructions" href="https://www.uvm.edu/registrar/swcschd-instructions" target="_parent">SWCSCHD Instructions</a>
+      </li>
+      <li>
+        <a alt="fall 2024 exam opt out form" href="https://myuvm.w3.uvm.edu/myuvm/prodpages/forms/finalExam.html" target="_parent">Fall 2024 Final Exam Opt Out Form</a>
+      </li>
+      <li>
+        <a alt="spring 2024 exam opt out form" href="https://myuvm.w3.uvm.edu/myuvm/prodpages/forms/finalExamSpring.html" target="_parent">Spring 2024 Final Exam Opt Out Form</a>
+      </li>
+      <!--			<li>
+                      <a alt="meeting pattern exception instructions" href="/web/home-community/dean-chair?p_p_id=56_INSTANCE_ayKwuah5ms3M&amp;p_p_lifecycle=0&amp;p_p_state=maximized&amp;p_p_col_id=column-1&amp;p_p_col_pos=1&amp;p_p_col_count=1&amp;link_id=44" onclick="_gaq.push(['_trackEvent', 'Faculty', 'Dean/Chair - SOC', 'SMP Exception Instructions']);" target="_parent">SMP Exception Instructions (for ADs)</a></li> -->
+    </ul>
+  </div>
+  <div id="pane-right">
+    <h1>Course Reports</h1>
+    <ul>
+      <li>
+        <!--<img src="https://www.uvm.edu/~myuvm/lp5/testpages/images/new.png" style="width: 32px; height: 32px;" />--><a alt="Basic Course Information Report" href="https://aisweb5.uvm.edu/ssomanager/c/SSB?pkg=hwwkcrsdatarpt.P_RunCrsDataRpt" target="_parent"><strong>Basic Course Information Report</strong></a><br>
+        <em>This report provides a list of all active/inactive courses. Selection
+          choices include college, department, and subject.</em>
+      </li>
+      <li>
+        <a alt="Course renumbering 3 to 4 digit report" href="https://aisweb5.uvm.edu/ssomanager/c/SSB?pkg=hwwkcrsrenum.P_RunCrsRenumRpt" target="_parent"><strong>Course Renumbering 3 to 4 Digit Report</strong></a><br>
+        <em>This report displays courses with their 3 and 4 digit numbers. The
+          report is based on the original spreadsheet submissions. Course
+          changes made after the spreadsheets were processed are not
+          reflected.</em>
+      </li>
+      <li>
+        <a alt="Course renumbering widget tool" href="https://aisweb1.uvm.edu/pls/owa_prod/hwwkwcrt.P_Select_Crse" target="_parent"><strong>Course Renumbering Widget</strong></a><br>
+        <em>This tool will give you the new 4-digit number when you enter an old
+          3-digit number. The widget is based on the original spreadsheet
+          submissions. Course changes made after the spreadsheets were processed
+          are not reflected.</em>
+      </li>
+      <li>
+        <a alt="expanded section description report" href="https://aisweb5.uvm.edu/ssomanager/c/SSB?pkg=hwwkrgrpt.P_RunESD" target="_parent"><strong>Expanded Section Description Report</strong></a><br>
+        <em>This report can be used to see how many active sections for a desired
+          term have or are missing an Expanded Section Description.</em>
+      </li>
+      <li>
+        <a alt="how to check for special topics" href="https://myuvm.w3.uvm.edu/myuvm/prodpages/deanchair/specialTopics.docx" target="_parent"><strong>Instructions for Reviewing Special Topics Courses</strong></a><br>
+        <em>This document contains instructions on how to identify Special Topics
+          sections in Course Reports.</em>
+      </li>
+      <li>
+        <a alt="general purpose distribution balance report" href="https://aisweb5.uvm.edu/ssomanager/c/SSB?pkg=hwwkfsocr.P_RunSMP" target="_parent"><strong>Distribution/Balance (GP)</strong></a><br>
+        <em>This report can be used to show how sections desiring only general
+          purpose space are distributed across the days and times of the
+          standard meeting patterns. Prime time is considered 9:40am-2:00pm MWF
+          or 10:05am-4:05pm TR.</em>
+      </li>
+      <li>
+        <a alt="all distribution balance report" href="https://aisweb5.uvm.edu/ssomanager/c/SSB?pkg=hwwkfsocr.P_RunSMP_All" target="_parent"><strong>Distribution/Balance (ALL)</strong></a><br>
+        <em>This report can be used to show how all sections are distributed
+          across the days and times of the standard meeting patterns. Prime time
+          is considered 9:40am-2:00pm MWF or 10:05am-4:05pm TR.</em>
+      </li>
+      <li>
+        <a alt="meeting analysis balance report" href="https://aisweb5.uvm.edu/ssomanager/c/SSB?pkg=hwwkfsocr.P_RunSMPBal" target="_parent"><strong>Balance for Meeting Analysis</strong></a><br>
+        <em>This report can be used to view the balance of courses by meeting
+          pattern for a specific term.</em>
+      </li>
+      <!--			<li>
+                      <a alt="course offering report" href="/web/home-community/dean-chair?p_p_id=56_INSTANCE_ayKwuah5ms3M&amp;p_p_lifecycle=0&amp;p_p_state=maximized&amp;p_p_col_id=column-1&amp;p_p_col_pos=1&amp;p_p_col_count=1&amp;link_id=48" onclick="_gaq.push(['_trackEvent', 'Faculty', 'Dean/Chair - SOC', 'Course Offerings Report']);" target="_parent"><strong>Course Offerings by Time/Day</strong></a><br />
+                      <em>This report can be used to view meeting patterns by course for a specific term.</em></li> -->
+      <li>
+        <a alt="course reason analysis report" href="https://serval.uvm.edu/~rgweb/batch/dean_report/reason_analysis/reason_analysis_menu.html" target="_parent"><strong>Course Reason Analysis</strong></a><br>
+        <em>This report can be used to view demand with known capacity by course
+          for a specific term.</em>
+      </li>
+      <li>
+        <a alt="course report menu" href="https://aisweb5.uvm.edu/ssomanager/c/SSB?pkg=twbkwbis.P_GenMenu?name=bmenu.P_CrsRpt" target="_parent"><strong>Course Report Menu</strong></a><br>
+        <em>This report can be used to view current enrollment by course for a
+          specific term.</em>
+      </li>
+      <li>
+        <a alt="enrollment summary report" href="https://serval.uvm.edu/~rgweb/batch/dean_report/enrl_menu.html" target="_parent"><strong>Enrollment Summary</strong></a><br>
+        <em>This report can be used to compare enrollment by course across
+          multiple terms.</em>
+      </li>
+      <!--			<li>
+                      <a alt="diversity course enrollment report" href="/web/home-community/dean-chair?p_p_id=56_INSTANCE_ayKwuah5ms3M&amp;p_p_lifecycle=0&amp;p_p_state=maximized&amp;p_p_col_id=column-1&amp;p_p_col_pos=1&amp;p_p_col_count=1&amp;link_id=52" onclick="_gaq.push(['_trackEvent', 'Faculty', 'Dean/Chair - SOC', 'Diversity Course Enrollment Report']);" target="_parent"><strong>Diversity Course Enrollment</strong></a><br />
+                      <em>This report can be used to view and compare enrollment in diversity courses for the current term or by specific year.</em></li> -->
+      <li>
+        <a alt="prerequisite reoprt" href="https://aisweb5.uvm.edu/ssomanager/c/SSB?pkg=hwwkpreq.P_RunPreqRpt" target="_parent"><strong>Prerequisite Report</strong></a><br>
+        <em>This report can be used to view prerequisites for a particular
+          subject in a specific term.</em>
+      </li>
+    </ul>
+  </div>
+  <div id="faculty-font">
+    <div id="section-break">
+      <h1>RETENTION RESOURCES</h1>
+    </div>
+    <div id="pane-left">
+      <div id="greenButton">
+        <a alt="reentry application" class="myButtonLinkR" href="https://myuvm.w3.uvm.edu/myuvm/prodpages/forms/reentry.html" target="_parent">Reentry Application</a>
+      </div>
+      <br>
+      <ul>
+        <li>
+          <a alt="retention resource" href="https://www.uvm.edu/oir/retention/graduation" target="_parent">Retention Rates</a>
+        </li>
+        <li>
+          <a alt="reentry form" href="https://www.uvm.edu/admissions/undergraduate/re_entry_students" target="_parent">Admissions Re-entry Form</a>
+        </li>
+        <li>
+          <a alt="medical withdrawal form" href="https://myuvm.w3.uvm.edu/myuvm/prodpages/forms/medicalWithdrawal.docx" target="_parent">Medical Withdrawal Form</a>
+        </li>
+      </ul>
+    </div>
+    <div id="pane-right">
+      <h1>Reports</h1>
+      <ul>
+        <li>
+          <a alt="retention report" href="https://aisweb5.uvm.edu/ssomanager/c/SSB?pkg=hwwkdrpt.P_RunReten" target="_parent"><strong>Retention Report</strong></a><br>
+          <em>Customizable report returns a list of students who have requested
+            transcripts.</em>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div id="faculty-font"></div>
+  <p>&nbsp;</p>
+</div>
+<script id="dynamic-script">
+            function sendHeight() {
+                    window.parent.postMessage(
+                        { height: document.body.scrollHeight },
+                        '*'
+                    );
+            }
+
+            window.addEventListener('load', sendHeight);
+            window.addEventListener('resize', sendHeight);
+        </script></body></html>

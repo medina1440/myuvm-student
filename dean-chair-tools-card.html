@@ -1,0 +1,327 @@
+<html><head><meta charset="utf-8"><title>Dean Chair</title><style>body{margin:0;padding:0;}</style></head><body><!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dean &amp; Chair Tools Card</title>
+
+    <!--
+      Ellucian Experience HTML card: single point of entry to the
+      Dean & Department Chair Tools page, with up to MAX_ANNOUNCEMENTS
+      short announcements.
+
+      To update announcements, edit the ANNOUNCEMENTS array in the
+      <script> at the bottom. Each item hides itself after its
+      `expires` date, so stale notices drop off on their own. When
+      nothing is active, the card shows TAGLINE instead.
+
+      Before going live:
+        - Set PAGE_URL (below, in the script) to the real page slug.
+    -->
+
+    <!-- Brand fonts: Lora (display) + Roboto (UI/body), per UVM Brand Guidelines v.03.24 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Roboto:wght@400;500;700&display=swap"
+    />
+
+    <style>
+      :root {
+        /* Same tokens as the Academic Records / Student Life pages */
+        --uvm-green: #154734;
+        --uvm-green-dark: #0e3325;
+        --uvm-gold: #ffd100;
+        --uvm-sky: #489fdf;
+        --uvm-white: #ffffff;
+        --uvm-ink: #2b2b2b;
+        --uvm-muted: #5a5a5a;
+        --uvm-fog: #f7f7f7;
+        --uvm-radius: 10px;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      main {
+        font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        color: var(--uvm-ink);
+        background: var(--uvm-white);
+        height: 100%;
+      }
+
+      .container {
+        height: 100%;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 14px 14px;
+      }
+
+      .card-body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 10px;
+        width: 100%;
+        max-width: 420px;
+      }
+
+      /* Green chip with white glyph, same as the card icons on the page */
+      .card-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: var(--uvm-green);
+        color: var(--uvm-white);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .card-icon svg {
+        width: 26px;
+        height: 26px;
+      }
+
+      h3 {
+        font-family: 'Lora', Georgia, serif;
+        font-weight: 600;
+        font-size: 1.15rem;
+        line-height: 1.3;
+        margin: 0;
+        color: var(--uvm-green);
+      }
+      /* Short gold rule, same accent the page uses under section headings */
+      h3::after {
+        content: '';
+        display: block;
+        width: 40px;
+        height: 3px;
+        margin: 8px auto 0;
+        border-radius: 2px;
+        background: var(--uvm-gold);
+      }
+
+      .tagline {
+        margin: 0;
+        font-size: 0.9rem;
+        line-height: 1.45;
+        color: var(--uvm-muted);
+      }
+
+      /* Announcements: left-aligned list on a light panel with the
+         same gold left rule as the page's deadline strip */
+      .announcements {
+        width: 100%;
+        margin: 2px 0 0;
+        padding: 0;
+        list-style: none;
+        text-align: left;
+        background: var(--uvm-fog);
+        border-left: 4px solid var(--uvm-gold);
+        border-radius: 8px;
+      }
+      .announcement {
+        padding: 9px 12px;
+        font-size: 0.84rem;
+        line-height: 1.4;
+      }
+      .announcement + .announcement {
+        border-top: 1px solid #e3e3e3;
+      }
+      .announcement-label {
+        display: block;
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: var(--uvm-green);
+        margin-bottom: 2px;
+      }
+      .announcement-text {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        color: var(--uvm-ink);
+      }
+      .announcement a {
+        color: var(--uvm-green);
+        text-decoration: underline;
+        text-decoration-color: rgba(21, 71, 52, 0.4);
+        text-underline-offset: 2px;
+      }
+      .announcement a:hover {
+        text-decoration-color: var(--uvm-green);
+        text-decoration-thickness: 2px;
+      }
+
+      .card-button {
+        display: inline-block;
+        margin-top: 4px;
+        padding: 0.6rem 1.4rem;
+        font-family: 'Roboto', sans-serif;
+        font-size: 0.9rem;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        text-decoration: none;
+        color: var(--uvm-white);
+        background: var(--uvm-green);
+        border: 2px solid var(--uvm-green);
+        border-radius: var(--uvm-radius);
+        transition: background 0.15s ease, border-color 0.15s ease;
+      }
+      .card-button:hover {
+        background: var(--uvm-green-dark);
+        border-color: var(--uvm-gold);
+      }
+      .card-button:focus-visible,
+      .announcement a:focus-visible {
+        outline: 3px solid var(--uvm-sky);
+        outline-offset: 2px;
+      }
+
+      /* Short cards: drop the icon first, then trim to one announcement */
+      @media (max-height: 340px) {
+        .card-icon { display: none; }
+      }
+      @media (max-height: 270px) {
+        .announcement:nth-child(n + 2) { display: none; }
+        .announcement-text { -webkit-line-clamp: 1; }
+        .tagline { display: none; }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .card-button { transition: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="container">
+        <div class="card-body">
+          <span class="card-icon">
+            <!-- Clipboard with report bars (bars are cut-outs via evenodd) -->
+            <svg viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M12.5 2h7a1.5 1.5 0 011.5 1.5V6a1 1 0 01-1 1h-9a1 1 0 01-1-1V3.5A1.5 1.5 0 0112.5 2z" />
+              <path
+                fill-rule="evenodd"
+                d="M8 4.5h1.5V6a2.5 2.5 0 002.5 2.5h8A2.5 2.5 0 0022.5 6V4.5H24a2.5 2.5 0 012.5 2.5v20.5A2.5 2.5 0 0124 30H8a2.5 2.5 0 01-2.5-2.5V7A2.5 2.5 0 018 4.5zM10.5 25.5h3v-7h-3v7zm4.5 0h3V13h-3v12.5zm4.5 0h3V16h-3v9.5z"
+              />
+            </svg>
+          </span>
+
+          <h3>Advising and Grade Reporting, Schedule of Courses Tools, Student Processing, and more.</h3>
+
+          <p class="tagline" id="cardTagline">Course, grade, advising, and enrollment reports in one place</p>
+
+          <ul class="announcements" id="cardAnnouncements" aria-label="Announcements" hidden></ul>
+
+          <a class="card-button" id="cardButton" href="#" target="__parent__">Open Dean &amp; Chair Page</a>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      (function () {
+        'use strict';
+
+        /* ----------------------------------------------------------
+           DATA — edit these values to update the card.
+        ---------------------------------------------------------- */
+
+        // TODO: replace with the real page slug once the page is created.
+        var PAGE_URL = 'https://experience-test.elluciancloud.com/uov549test/page/deanchair-reports-tools';
+
+        // Link target, kept the same as the Academic Records card.
+        // See notes: "__parent__" is not a reserved keyword, so the browser
+        // treats it as a named window. Switch to "_top" if your Experience
+        // card iframe allows top navigation and you want same-tab behavior.
+        var LINK_TARGET = '__parent__';
+
+        var MAX_ANNOUNCEMENTS = 2;
+
+        // label:   short gold line above the text (a date or a category)
+        // text:    aim for ~60 characters; anything past 2 lines is clipped
+        // href:    optional; makes the text a link
+        // expires: 'YYYY-MM-DD', last day the item shows (inclusive)
+        // starts:  optional 'YYYY-MM-DD', first day the item shows
+        //
+        // SAMPLE CONTENT: replace with real registrar messaging.
+        var ANNOUNCEMENTS = [
+          {
+            label: 'Withdrawal deadline · Nov 2',
+            text: 'After Nov 2, withdrawals need dean approval.',
+            href: 'https://www.uvm.edu/registrar/online-withdrawal-policy',
+            expires: '2026-11-16'
+          },
+          {
+            label: 'Spring 2027 schedule',
+            text: 'Proofing is open. Review your sections and request changes.',
+            href: 'https://myuvm.w3.uvm.edu/myuvm/prodpages/forms/soc_change_request_ad.html',
+            expires: '2026-11-20'
+          }
+        ];
+
+        /* ---------------------------------------------------------- */
+
+        var button = document.getElementById('cardButton');
+        button.href = PAGE_URL;
+        button.target = LINK_TARGET;
+
+        function parseDate(s) {
+          var p = s.split('-');
+          return new Date(+p[0], +p[1] - 1, +p[2]);
+        }
+        var now = new Date();
+        var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+        var active = ANNOUNCEMENTS.filter(function (a) {
+          if (a.starts && parseDate(a.starts) > today) return false;
+          return !a.expires || parseDate(a.expires) >= today;
+        }).slice(0, MAX_ANNOUNCEMENTS);
+
+        if (!active.length) return; // tagline stays visible
+
+        var list = document.getElementById('cardAnnouncements');
+        active.forEach(function (a) {
+          var li = document.createElement('li');
+          li.className = 'announcement';
+
+          if (a.label) {
+            var label = document.createElement('span');
+            label.className = 'announcement-label';
+            label.textContent = a.label;
+            li.appendChild(label);
+          }
+
+          var text;
+          if (a.href) {
+            text = document.createElement('a');
+            text.href = a.href;
+            text.target = '_blank';
+            text.rel = 'noopener';
+          } else {
+            text = document.createElement('span');
+          }
+          text.className = 'announcement-text';
+          text.textContent = a.text;
+          li.appendChild(text);
+
+          list.appendChild(li);
+        });
+
+        list.hidden = false;
+        document.getElementById('cardTagline').hidden = true;
+      })();
+    </script>
+  </body>
+</html>
+</body></html>
