@@ -1,0 +1,310 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UVM Student Academic Portal</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI',
+          Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        background: linear-gradient(135deg, #005035 0%, #007c5c 100%);
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .announcement-bar {
+        background: #ffc72c;
+        color: #005035;
+        padding: 12px 20px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      }
+
+      .announcement-bar h2 {
+        font-size: 16px;
+        margin-bottom: 8px;
+        font-weight: 700;
+      }
+
+      .deadline {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 6px;
+        font-size: 14px;
+      }
+
+      .deadline:last-child {
+        margin-bottom: 0;
+      }
+
+      .deadline-icon {
+        font-size: 18px;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .header {
+        text-align: center;
+        color: white;
+        margin-bottom: 30px;
+      }
+
+      .header h1 {
+        font-size: 36px;
+        margin-bottom: 10px;
+      }
+
+      .header p {
+        font-size: 18px;
+        opacity: 0.9;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+      }
+
+      .card {
+        background: white;
+        border-radius: 12px;
+        padding: 24px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+
+      .card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      }
+
+      .card-icon {
+        font-size: 36px;
+        margin-bottom: 12px;
+        display: block;
+      }
+
+      .card h3 {
+        color: #005035;
+        margin-bottom: 12px;
+        font-size: 20px;
+      }
+
+      .card p {
+        color: #555;
+        line-height: 1.6;
+        margin-bottom: 16px;
+        font-size: 14px;
+      }
+
+      .card-link {
+        display: inline-block;
+        background: #005035;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 14px;
+        transition: background 0.2s;
+      }
+
+      .card-link:hover {
+        background: #007c5c;
+      }
+
+      .quick-links {
+        background: white;
+        border-radius: 12px;
+        padding: 24px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .quick-links h3 {
+        color: #005035;
+        margin-bottom: 16px;
+        font-size: 20px;
+      }
+
+      .quick-links ul {
+        list-style: none;
+      }
+
+      .quick-links li {
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+      }
+
+      .quick-links li:last-child {
+        border-bottom: none;
+      }
+
+      .quick-links a {
+        color: #007c5c;
+        text-decoration: none;
+        font-size: 15px;
+        transition: color 0.2s;
+      }
+
+      .quick-links a:hover {
+        color: #005035;
+        text-decoration: underline;
+      }
+
+      @media (max-width: 768px) {
+        .header h1 {
+          font-size: 28px;
+        }
+
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="announcement-bar">
+        <h2>🔔 Important Deadlines</h2>
+        <div class="deadline">
+          <span class="deadline-icon">📅</span>
+          <strong>Fall Recess:</strong> Friday, October 10, 2025
+        </div>
+        <div class="deadline">
+          <span class="deadline-icon">⚠️</span>
+          <strong>Last Day to Withdraw:</strong> Monday,
+          October 27, 2025
+        </div>
+      </div>
+
+      <div class="header">
+        <h1>UVM Academic Portal</h1>
+        <p>Your gateway to registration, grades, and academic success</p>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <span class="card-icon">📚</span>
+          <h3>Course Registration</h3>
+          <p>
+            Browse courses, check availability, and register for
+            classes through the Banner self-service portal.
+          </p>
+          <a href="https://www.uvm.edu/registrar/register-classes" class="card-link">Register for Classes</a>
+        </div>
+
+        <div class="card">
+          <span class="card-icon">📅</span>
+          <h3>Academic Calendar</h3>
+          <p>
+            View important dates including add/drop deadlines, exams,
+            breaks, and commencement ceremonies.
+          </p>
+          <a href="https://www.uvm.edu/registrar/uvm-academic-calendar" class="card-link">View Calendar</a>
+        </div>
+
+        <div class="card">
+          <span class="card-icon">📊</span>
+          <h3>Grades &amp; GPA</h3>
+          <p>
+            Check your current grades, view your unofficial
+            transcript, and track your academic progress.
+          </p>
+          <a href="https://www.uvm.edu/registrar/grades" class="card-link">View Grades</a>
+        </div>
+
+        <div class="card">
+          <span class="card-icon">📄</span>
+          <h3>Transcripts</h3>
+          <p>
+            Request official or unofficial transcripts for transfer,
+            graduate school, or employment purposes.
+          </p>
+          <a href="https://www.uvm.edu/registrar/request-your-transcript" class="card-link">Request Transcript</a>
+        </div>
+
+        <div class="card">
+          <span class="card-icon">🔄</span>
+          <h3>Transfer Credit</h3>
+          <p>
+            Check transfer credit equivalencies and submit courses
+            for evaluation toward your UVM degree.
+          </p>
+          <a href="https://aisweb1.uvm.edu/pls/owa_prod/hwwkwags.P_Web_Artic_Guide" class="card-link">Transfer Guide</a>
+        </div>
+
+        <div class="card">
+          <span class="card-icon">✅</span>
+          <h3>Degree Audit</h3>
+          <p>
+            Track your progress toward graduation and see which
+            requirements you've completed.
+          </p>
+          <a href="https://www.uvm.edu/registrar/degree-audit" class="card-link">View Degree Audit</a>
+        </div>
+
+        <div class="card">
+          <span class="card-icon">📝</span>
+          <h3>Schedule of Courses</h3>
+          <p>
+            Search the complete schedule of courses with detailed
+            descriptions and meeting times.
+          </p>
+          <a href="https://catalogue.uvm.edu/" class="card-link">Browse Courses</a>
+        </div>
+
+        <div class="card">
+          <span class="card-icon">📖</span>
+          <h3>Academic Support</h3>
+          <p>
+            Access tutoring, advising, writing center, and other
+            resources to support your academic success.
+          </p>
+          <a href="https://www.uvm.edu/academicsuccess" class="card-link">Get Support</a>
+        </div>
+      </div>
+
+      <div class="quick-links">
+        <h3>Quick Links</h3>
+        <ul>
+          <li>
+            <a href="https://www.uvm.edu/registrar/final-exams">📋 Final Exam Schedule</a>
+          </li>
+          <li>
+            <a href="https://www.uvm.edu/registrar/registration-schedule">🕐 Registration Schedule</a>
+          </li>
+          <li>
+            <a href="https://www.uvm.edu/registrar/online-withdrawal-policy">↩️ Withdrawal Policy</a>
+          </li>
+          <li>
+            <a href="https://www.uvm.edu/registrar/student-forms-policies-and-procedures">📄 Forms &amp; Policies</a>
+          </li>
+          <li>
+            <a href="https://www.uvm.edu/registrar/frequently-asked-questions">❓ Registrar FAQ</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  
+<script id="dynamic-script">
+            function sendHeight() {
+                    window.parent.postMessage(
+                        { height: document.body.scrollHeight },
+                        '*'
+                    );
+            }
+
+            window.addEventListener('load', sendHeight);
+            window.addEventListener('resize', sendHeight);
+        </script></body></html>
