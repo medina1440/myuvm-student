@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Financial Services Card</title>
+
+    <!--
+      Ellucian Experience HTML card: single point of entry to the
+      Student Financial Services page, with short announcements.
+      Same code as the Faculty & Instructor Tools card; only the
+      icon, copy, PAGE_URL and ANNOUNCEMENTS differ.
+
+      Announcements (ANNOUNCEMENTS array in the <script> at the bottom):
+        - Each item shows from `starts` (optional) through `expires`,
+          so notices schedule themselves and drop off on their own.
+        - Active items show in array order, PER_PAGE at a time. With
+          more than PER_PAGE active, a small pager appears.
+        - When nothing is active, the tagline shows instead.
+        - To preview the card on another date, set PREVIEW_DATE.
+
+      Before going live:
+        - Set PAGE_URL (below, in the script) to the real page slug.
+        - Have SFS confirm the announcements (sourced from the SFS
+          site on Oct 28, 2026; see notes beside each item).
+    -->
+
+    <!-- Brand fonts: Lora (display) + Roboto (UI/body), per UVM Brand Guidelines v.03.24 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Roboto:wght@400;500;700&display=swap"
+    />
+
+    <style>
+      :root {
+        /* Same tokens as the Academic Records / Student Life pages */
+        --uvm-green: #154734;
+        --uvm-green-dark: #0e3325;
+        --uvm-gold: #ffd100;
+        --uvm-sky: #489fdf;
+        --uvm-white: #ffffff;
+        --uvm-ink: #2b2b2b;
+        --uvm-muted: #5a5a5a;
+        --uvm-fog: #f7f7f7;
+        --uvm-radius: 10px;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      main {
+        font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        color: var(--uvm-ink);
+        background: var(--uvm-white);
+        height: 100%;
+      }
+
+      .container {
+        height: 100%;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 14px 14px;
+      }
+
+      .card-body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 10px;
+        width: 100%;
+        max-width: 420px;
+      }
+
+      /* Green chip with white glyph, same as the card icons on the page */
+      .card-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: var(--uvm-green);
+        color: var(--uvm-white);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .card-icon svg {
+        width: 26px;
+        height: 26px;
+      }
+
+      h3 {
+        font-family: 'Lora', Georgia, serif;
+        font-weight: 600;
+        font-size: 1.15rem;
+        line-height: 1.3;
+        margin: 0;
+        color: var(--uvm-green);
+      }
+      /* Short gold rule, same accent the page uses under section headings */
+      h3::after {
+        content: '';
+        display: block;
+        width: 40px;
+        height: 3px;
+        margin: 8px auto 0;
+        border-radius: 2px;
+        background: var(--uvm-gold);
+      }
+
+      .tagline {
+        margin: 0;
+        font-size: 0.9rem;
+        line-height: 1.45;
+        color: var(--uvm-muted);
+      }
+
+      /* Announcements: left-aligned list on a light panel with the
+         same gold left rule as the page's deadline strip */
+      .announce-panel {
+        width: 100%;
+        margin: 2px 0 0;
+        text-align: left;
+        background: var(--uvm-fog);
+        border-left: 4px solid var(--uvm-gold);
+        border-radius: 8px;
+      }
+      .announcements {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      .announcement {
+        padding: 9px 12px;
+        font-size: 0.84rem;
+        line-height: 1.4;
+      }
+      .announcement + .announcement {
+        border-top: 1px solid #e3e3e3;
+      }
+      .announcement-label {
+        display: block;
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: var(--uvm-green);
+        margin-bottom: 2px;
+      }
+      .announcement-text {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        color: var(--uvm-ink);
+      }
+      .announcement a {
+        color: var(--uvm-green);
+        text-decoration: underline;
+        text-decoration-color: rgba(21, 71, 52, 0.4);
+        text-underline-offset: 2px;
+      }
+      .announcement a:hover {
+        text-decoration-color: var(--uvm-green);
+        text-decoration-thickness: 2px;
+      }
+
+      .announce-pager {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 2px;
+        padding: 2px 6px 4px;
+        border-top: 1px solid #e3e3e3;
+        font-size: 0.74rem;
+        color: var(--uvm-muted);
+      }
+      .announce-pager span {
+        margin: 0 4px;
+        font-variant-numeric: tabular-nums;
+      }
+      .announce-pager button {
+        width: 26px;
+        height: 26px;
+        padding: 0;
+        border: 0;
+        border-radius: 50%;
+        background: transparent;
+        color: var(--uvm-green);
+        font: 700 1rem/1 'Roboto', sans-serif;
+        cursor: pointer;
+      }
+      .announce-pager button:hover {
+        background: #e9e9e9;
+      }
+      .announce-pager button:focus-visible {
+        outline: 3px solid var(--uvm-sky);
+        outline-offset: 1px;
+      }
+
+      .card-button {
+        display: inline-block;
+        margin-top: 4px;
+        padding: 0.6rem 1.4rem;
+        font-family: 'Roboto', sans-serif;
+        font-size: 0.9rem;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        text-decoration: none;
+        color: var(--uvm-white);
+        background: var(--uvm-green);
+        border: 2px solid var(--uvm-green);
+        border-radius: var(--uvm-radius);
+        transition: background 0.15s ease, border-color 0.15s ease;
+      }
+      .card-button:hover {
+        background: var(--uvm-green-dark);
+        border-color: var(--uvm-gold);
+      }
+      .card-button:focus-visible,
+      .announcement a:focus-visible {
+        outline: 3px solid var(--uvm-sky);
+        outline-offset: 2px;
+      }
+
+      /* Short cards: drop the icon first, then trim to one announcement */
+      @media (max-height: 340px) {
+        .card-icon { display: none; }
+      }
+      @media (max-height: 270px) {
+        .announcement:nth-child(n + 2) { display: none; }
+        .announce-pager { display: none; }
+        .announcement-text { -webkit-line-clamp: 1; }
+        .tagline { display: none; }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .card-button { transition: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="container">
+        <div class="card-body">
+          <span class="card-icon">
+            <!-- Wallet with clasp (evenodd hole in the clasp) -->
+            <svg viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M8.2 5.6L21.7 2.8a1.5 1.5 0 011.78 1.13L23.9 5.6z" />
+              <path d="M6.5 7H25a3 3 0 013 3v1.5h-6.25a4.25 4.25 0 000 8.5H28v1.5a3 3 0 01-3 3H6.5a3 3 0 01-3-3V10a3 3 0 013-3z" />
+              <path
+                fill-rule="evenodd"
+                d="M21.75 13H29.5v5.5h-7.75a2.75 2.75 0 010-5.5zm.5 1.5a1.25 1.25 0 100 2.5 1.25 1.25 0 000-2.5z"
+              />
+            </svg>
+          </span>
+
+          <h3>Student Financial Services</h3>
+
+          <p class="tagline" id="cardTagline">Pay your bill, check financial aid, and manage family access</p>
+
+          <div class="announce-panel" id="announcePanel" hidden>
+            <ul class="announcements" id="cardAnnouncements" aria-label="Announcements" aria-live="polite"></ul>
+            <div class="announce-pager" id="announcePager" hidden>
+              <button type="button" id="announcePrev" aria-label="Previous announcements">&lsaquo;</button>
+              <span id="announcePage"></span>
+              <button type="button" id="announceNext" aria-label="Next announcements">&rsaquo;</button>
+            </div>
+          </div>
+
+          <a class="card-button" id="cardButton" href="#" target="__parent__">Open Student Financial Services</a>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      (function () {
+        'use strict';
+
+        /* ----------------------------------------------------------
+           DATA — edit these values to update the card.
+        ---------------------------------------------------------- */
+
+        // TODO: replace with the real page slug once the page is created.
+        var PAGE_URL = 'https://experience-test.elluciancloud.com/uov549test/page/student_financial_services';
+
+        // Link target, kept the same as the Academic Records and Faculty cards.
+        // See notes: "__parent__" is not a reserved keyword, so the browser
+        // treats it as a named window. Switch to "_top" if your Experience
+        // card iframe allows top navigation and you want same-tab behavior.
+        var LINK_TARGET = '__parent__';
+
+        var PER_PAGE = 2;
+
+        // Leave null in production. Set to 'YYYY-MM-DD' to preview what the
+        // card shows on that date (e.g. '2026-11-20' brings in the spring
+        // bill item and drops the Nov 1 and Nov 16 reminders).
+        var PREVIEW_DATE = null;
+
+        // label:   short green line above the text (a date or a category)
+        // text:    aim for ~60 characters; anything past 2 lines is clipped
+        // href:    optional; makes the text a link
+        // starts:  optional 'YYYY-MM-DD', first day the item shows
+        // expires: 'YYYY-MM-DD', last day the item shows (inclusive)
+        // Active items show in this order, so put the most urgent first.
+        //
+        // Array order is expiry order, so the most urgent active item
+        // always leads. Keep it that way when adding items.
+        // Sources (checked Oct 28, 2026): SFS Billing and Payment Due
+        // Dates, Payment Options, Tuition Refunds, Financial Aid Deadlines,
+        // Proxy & Authorized Payer Access, Higher Education Tax Benefits.
+        var SFS = 'https://www.uvm.edu/studentfinancialservices/';
+        var ANNOUNCEMENTS = [
+          {
+            // Fall plan runs up to 5 payments, Jul 1 – Nov 1
+            label: 'Fall payment plan · Sun, Nov 1',
+            text: 'Your last fall installment is due. Make sure it’s funded.',
+            href: SFS + 'monthly-payment-plan',
+            expires: '2026-11-01'
+          },
+          {
+            // From the SFS home page "Upcoming Dates to Know"
+            label: 'Spring registration · Mon, Nov 16',
+            text: 'Clear any financial hold before your registration time.',
+            href: SFS + 'account-holds#fh---financial-hold',
+            expires: '2026-11-16'
+          },
+          {
+            // Spring plan runs up to 5 payments, Dec 1 – Apr 1; $60/semester
+            label: 'Spring payment plan · Starts Dec 1',
+            text: 'Spread spring charges over up to 5 monthly payments.',
+            href: SFS + 'monthly-payment-plan',
+            starts: '2026-11-02',
+            expires: '2026-12-01'
+          },
+          {
+            // Bill date Dec 9 for anyone registered before Dec 9
+            label: 'Spring bill · Due Wed, Jan 13',
+            text: 'Bills post Dec 9. Pay by 4:30 PM ET to avoid a late fee and hold.',
+            href: SFS + 'billing-and-payment-due-dates',
+            starts: '2026-11-17',
+            expires: '2027-01-13'
+          },
+          {
+            // Billing moved to QuikPAY (Dec 2025); old proxies lost billing
+            // access and must be re-invited as Authorized Payers.
+            label: 'Family access',
+            text: 'Re-add proxies and invite Authorized Payers for billing access.',
+            href: SFS + 'proxy-authorized-payer-access',
+            expires: '2027-01-13'
+          },
+          {
+            label: 'Spring refunds · Mon, Feb 1',
+            text: 'Last day for a 100% refund when dropping a spring course.',
+            href: SFS + 'tuition-refunds',
+            starts: '2027-01-19',
+            expires: '2027-02-01'
+          },
+          {
+            // 2027–28 FAFSA opened Sept 24, 2026. Feb 1 is UVM's deadline
+            // for current/returning undergrads; grads have no fixed date.
+            label: '2027–28 FAFSA · Due Feb 1',
+            text: 'Returning undergrads: file by Feb 1 for an on-time aid offer.',
+            href: 'https://studentaid.gov/h/apply-for-aid/fafsa',
+            expires: '2027-02-01'
+          },
+          {
+            // Available "early to mid January"; paper mailed by Jan 31
+            label: '1098-T · Mid-January',
+            text: 'Your 2026 tax form posts in myUVM; paper copies mail by Jan 31.',
+            href: SFS + 'higher-education-tax-benefits',
+            starts: '2027-01-04',
+            expires: '2027-04-15'
+          }
+        ];
+
+        /* ---------------------------------------------------------- */
+
+        var button = document.getElementById('cardButton');
+        button.href = PAGE_URL;
+        button.target = LINK_TARGET;
+
+        function parseDate(s) {
+          var p = s.split('-');
+          return new Date(+p[0], +p[1] - 1, +p[2]);
+        }
+        var now = PREVIEW_DATE ? parseDate(PREVIEW_DATE) : new Date();
+        var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+        var active = ANNOUNCEMENTS.filter(function (a) {
+          if (a.starts && parseDate(a.starts) > today) return false;
+          return !a.expires || parseDate(a.expires) >= today;
+        });
+
+        if (!active.length) return; // tagline stays visible
+
+        var list = document.getElementById('cardAnnouncements');
+        var pager = document.getElementById('announcePager');
+        var pageLabel = document.getElementById('announcePage');
+        var pageCount = Math.ceil(active.length / PER_PAGE);
+        var page = 0;
+
+        function buildItem(a) {
+          var li = document.createElement('li');
+          li.className = 'announcement';
+
+          if (a.label) {
+            var label = document.createElement('span');
+            label.className = 'announcement-label';
+            label.textContent = a.label;
+            li.appendChild(label);
+          }
+
+          var text;
+          if (a.href) {
+            text = document.createElement('a');
+            text.href = a.href;
+            text.target = '_blank';
+            text.rel = 'noopener';
+          } else {
+            text = document.createElement('span');
+          }
+          text.className = 'announcement-text';
+          text.textContent = a.text;
+          li.appendChild(text);
+          return li;
+        }
+
+        function render() {
+          list.innerHTML = '';
+          active.slice(page * PER_PAGE, page * PER_PAGE + PER_PAGE).forEach(function (a) {
+            list.appendChild(buildItem(a));
+          });
+          pageLabel.textContent = (page + 1) + ' of ' + pageCount;
+        }
+
+        // Pager wraps around at either end
+        document.getElementById('announcePrev').addEventListener('click', function () {
+          page = (page - 1 + pageCount) % pageCount;
+          render();
+        });
+        document.getElementById('announceNext').addEventListener('click', function () {
+          page = (page + 1) % pageCount;
+          render();
+        });
+
+        // Hold the list at the height of its tallest page so the title and
+        // button don't jump when paging. Re-measure once fonts have loaded.
+        function lockHeight() {
+          var current = page, tallest = 0;
+          list.style.minHeight = '';
+          for (page = 0; page < pageCount; page++) {
+            render();
+            tallest = Math.max(tallest, list.offsetHeight);
+          }
+          page = current;
+          render();
+          list.style.minHeight = tallest + 'px';
+        }
+
+        pager.hidden = pageCount < 2;
+        document.getElementById('announcePanel').hidden = false;
+        lockHeight();
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(lockHeight);
+        document.getElementById('cardTagline').hidden = true;
+      })();
+    </script>
+  </body>
+</html>
